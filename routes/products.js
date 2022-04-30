@@ -1,8 +1,10 @@
 const express = require("express");
+const productsModel = require("../models/products");
+const { productsService } = require("../models/products");
 
 const router = express.Router();
 
-let users = [
+let products = [
   {
     name: "samsung j6",
     price: 12000,
@@ -35,19 +37,19 @@ router.get("/", (req, res) => {
   //     return res.sendStatus(404);
   //   }
 
-  return res.json(users);
+  return res.json(products);
 });
 
-router.post("/", (req, res) => {
-  users.push(req.body);
-  res.send("Data added successfully");
+router.post("/", async (req, res) => {
+  const data = await productsModel.addProduct(req.body);
+  return res.json(data);
 });
 
 router.patch("/:name", (req, res) => {
   const name = req.params.name;
   const age = req.body.age;
 
-  users = users.map((user) => {
+  products = products.map((user) => {
     if (user.name === name) {
       return {
         name,
@@ -63,7 +65,7 @@ router.patch("/:name", (req, res) => {
 
 router.delete("/:name", (req, res) => {
   const name = req.params.name;
-  users = users.filter((user) => {
+  products = products.filter((user) => {
     return user.name !== name;
   });
   res.send(`User - ${name} deleted successfully`);

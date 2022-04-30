@@ -3,6 +3,7 @@ const express = require("express");
 const users = require("./routes/users");
 const products = require("./routes/products");
 const requestLogger = require("./utils/request-logger");
+const connection = require("./connections/dbConnection");
 
 const app = express();
 
